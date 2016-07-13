@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1 - race cond on start with balance...
 
-Things you may want to cover:
+2 - api or csv field thingee
 
-* Ruby version
+3 - websockets...
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+4 - mmmm maybe service workers?

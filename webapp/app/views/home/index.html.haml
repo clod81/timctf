@@ -1,0 +1,18 @@
+- if current_user
+  - if current_user.balance_initialised
+    Your current balance is:
+    = current_user.balance
+    - if current_user.balance.zero?
+      %br
+      Either the system did not assign you any balance yet, or you ran out...
+
+  - else
+    In order to start testing the system you need the system, you need to get assigned some balance.
+    = button_to('Let\'Start!', { action: :create}, { data: { confirm: 'Are you ready to roll?', disable_with: 'YES!' } } )
+
+- else
+
+  Please
+  = link_to "Sign-in", new_user_session_path
+  or
+  = link_to "Sign-up", new_user_registration_path
