@@ -6,9 +6,10 @@ class ApplicationController < ActionController::Base
   private
 
   def set_socket_token
-    if current_user
+    if user_signed_in?
       @uuid = UUID.new.generate
       Webapp.redis.setex("webapp:#{current_user.id}", 3600, @uuid)
+      Webapp.redis.setex("webapp:#{@uuid}", 3600, current_user.id)
     end
   end
 end
