@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   def init_balance
     # send request to etherum...
-    self.update(balance: 100000000)
+    self.balance = balance + 100000000 # race condizio
+    self.save
   end
 end

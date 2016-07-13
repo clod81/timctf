@@ -47,6 +47,7 @@
 
     </div>
 
+    <%= javascript_tag "var zzzzzzzzzzzz='#{@uuid}';" if @uuid %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
