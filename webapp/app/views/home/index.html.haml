@@ -22,7 +22,7 @@
       %br
       You can also upload a comma delimited file containing credit transactions you want to send.
       %br
-      The format needs to match the following:
+      The format needs to match the following (headers needs to be specified):
       %br
       %code
         to_user_id,amount
@@ -33,9 +33,9 @@
 
       %br
       %br
-      = form_for(:transaction, url: csv_transactions_path, multipart: true) do |f|
+      = form_tag(csv_transactions_path, multipart: true) do
         = file_field_tag 'csv'
-        = f.submit "Upload CSV"
+        = submit_tag "Upload CSV"
 
   - if @sent_transactions && @sent_transactions.any?
     %h3 Sent Credit Transactions

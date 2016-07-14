@@ -28,7 +28,14 @@ class TransactionsController < ApplicationController
   end
 
   def csv
-    # TODO
+    if params[:csv].present?
+      begin
+        Csv.import(current_user, params[:csv].open.read.strip)
+        flash[:notice] = "File is being processed"
+      rescue
+        flash[:error] = "Something went wrong, please try again and make sure the CSV file matches the required format"
+      end
+    end
     redirect_to root_path
   end
 

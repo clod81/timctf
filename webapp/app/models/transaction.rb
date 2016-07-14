@@ -4,6 +4,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :debited_user, class_name: 'User', foreign_key: 'to_user_id'
 
   validates :user_id, :to_user_id, :amount, presence: true
+  validates :amount, numericality: { only_integer: true, greater_than: 0 }
   validate :different_users
   validate :check_amounts
 
