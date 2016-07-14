@@ -1,3 +1,9 @@
+- if @transaction && @transaction.errors.any?
+  %ul
+    - @transaction.errors.full_messages.each do |msg|
+      %li
+        = msg
+
 - if current_user
   - if current_user.balance_initialised
     Your current balance is:
@@ -5,6 +11,14 @@
     - if current_user.balance.zero?
       %br
       Either the system did not assign you any balance yet, or you ran out...
+    - else
+      %br
+      %br
+      = form_for(:transaction, url: transactions_path) do |f|
+        = f.text_field :to_user_id, placeholder: "TO USER ID"
+        = f.text_field :amount, placeholder: "AMOUNT"
+        = f.submit "Send credits"
+
 
   - else
     In order to start testing the system you need the system, you need to get assigned some balance.
@@ -12,7 +26,7 @@
 
 - else
 
-  CarbonNZ is implementing a new web interface in order to allow registered users to send carbon credit to other registered users.
+  CarbonNZ is implementing a new web interface in order to allow registered users to send carbon credit to other registered users. Feel free to register as many users as you wish.
 
   %br
   %br
@@ -26,7 +40,7 @@
 
   %br
   %br
-  
+
   In order to give the CarbonNZ a try, please
   = link_to "Sign-in", new_user_session_path
   or

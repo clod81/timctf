@@ -2,6 +2,7 @@ class HomeController < ApplicationController
 
   before_action :authenticate_user!,    except: :index
   before_action :check_initial_balance, only: :create
+  before_action :load_transactions,     except: :create
 
   def index
   end
@@ -29,6 +30,12 @@ class HomeController < ApplicationController
     flash[:error] = "You already initialised your balance"
     redirect_to root_path
     false
+  end
+
+  def load_transaction
+    if user_signed_in?
+      @sent_transactions = current_user.
+    end
   end
 
 end
