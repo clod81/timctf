@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require socketio
 //= require jquery_ujs
+//= require messages
 //= require turbolinks
-//= require_tree .
