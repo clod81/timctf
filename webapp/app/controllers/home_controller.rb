@@ -32,9 +32,10 @@ class HomeController < ApplicationController
     false
   end
 
-  def load_transaction
+  def load_transactions
     if user_signed_in?
-      @sent_transactions = current_user.
+      @sent_transactions     = current_user.transactions.order("id desc")
+      @received_transactions = current_user.received_transactions.order("id desc")
     end
   end
 

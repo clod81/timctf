@@ -1,7 +1,8 @@
 class TransactionsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :load_transaction, only: :destroy
+  before_action :load_transaction,  only: :destroy
+  before_action :load_transactions, only: :create
 
   def index
     redirect_to root_path
@@ -28,6 +29,7 @@ class TransactionsController < ApplicationController
 
   def csv
     # TODO
+    redirect_to root_path
   end
 
   private
@@ -37,7 +39,7 @@ class TransactionsController < ApplicationController
   end
 
   def load_transaction
-    if @transaction = Transaction.where(id: params[:id], user_id: current_user.id).first
+    if @transaction = current_user.transactions.where(id: params[:id]).first
       return true
     end
     if request.xhr?
@@ -46,6 +48,13 @@ class TransactionsController < ApplicationController
       redirect_to root_path
     end
     false
+  end
+
+  def load_transactions
+    if user_signed_in?
+      @sent_transactions     = current_user.transactions.order("id desc")
+      @received_transactions = current_user.received_transactions.order("id desc")
+    end
   end
 
 end

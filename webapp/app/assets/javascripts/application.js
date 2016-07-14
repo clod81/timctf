@@ -13,5 +13,5 @@
 //= require jquery
 //= require socketio
 //= require jquery_ujs
-// require messages
+//= require messages
 //= require turbolinks

@@ -18,7 +18,32 @@
         = f.text_field :to_user_id, placeholder: "TO USER ID"
         = f.text_field :amount, placeholder: "AMOUNT"
         = f.submit "Send credits"
+      %br
+      %br
+      You can also upload a comma delimited file containing credit transactions you want to send.
+      %br
+      The format needs to match the following:
+      %br
+      %code
+        to_user_id,amount
+        %br
+        1,100
+        %br
+        2,300
 
+      %br
+      %br
+      = form_for(:transaction, url: csv_transactions_path, multipart: true) do |f|
+        = file_field_tag 'csv'
+        = f.submit "Upload CSV"
+
+  - if @sent_transactions && @sent_transactions.any?
+    %h3 Sent Credit Transactions
+    = render partial: 'transactions/transactions', locals: { transactions: @sent_transactions, type: :sent }
+
+  - if @received_transactions && @received_transactions.any?
+    %h3 Received Credit Transactions
+    = render partial: 'transactions/transactions', locals: { transactions: @received_transactions, type: :received }
 
   - else
     In order to start testing the system you need the system, you need to get assigned some balance.
@@ -36,7 +61,7 @@
   %br
   %br
 
-  The CarbonNZ web developers really would like to hear any security concern around possibility to send any credit from an account to another by abusing any existing security vulnerability that might exist.
+  The CarbonNZ web developers would like to hear any security concern around possibility to gain extra credit or send any credit from an account to another by abusing any security vulnerability that might exist.
 
   %br
   %br

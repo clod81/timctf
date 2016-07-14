@@ -1,0 +1,29 @@
+%table
+  %thead
+    %th
+      - if type == :received
+        From
+      User ID
+    %th
+      Amount
+    %th
+      Received at
+    %th
+      Approved
+  %tbody
+    - transactions.each do |t|
+      %tr
+        %td
+          - if type == :sent
+            = t.to_user_id
+          - else
+            = t.user_id
+        %td
+          = t.amount
+        %td
+          = t.created_at.try(:localtime)
+        %td
+          - if t.approved?
+            Yes
+          - elsif type == :sent
+            = button_to("Reverse", t, method: :delete, data: { confirm: "Are you sure?", disable_with: 'processing...' })
