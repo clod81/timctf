@@ -1,3 +1,0 @@
-publish 'webapp:messages' 'data'
-subscribe 'testme'
-pubsub channels
