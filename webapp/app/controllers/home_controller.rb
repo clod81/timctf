@@ -9,7 +9,7 @@ class HomeController < ApplicationController
   # start - get balance - one off background operation...
   def create
     if request.xhr? # don't make it too easy
-      redirect_to root_path
+      render nothing: true
       return
     end
     current_user.delay.init_balance
