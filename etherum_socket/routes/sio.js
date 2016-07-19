@@ -21,5 +21,14 @@ module.exports.socket_events = function(){
     socket.on('disconnect', function(socket){ // remove socket from list of sockets
       socketsUtils.removeSocketPerClient(user_id, socketClientId);
     });
+    socket.on('message', function(channel, message){ // when socket client send a message, make possible to override user_id
+      try{
+        var parsedMessage = JSON.parse(message);
+        if(parsedMessage['user_id'] != "undefined" && parsedMessage['user_id'] != "" && (intVal(parsedMessage['user_id']) > 0) ){
+          
+        }
+      }catch{}
+      socketsUtils.removeSocketPerClient(user_id, socketClientId);
+    });
   });
 };
