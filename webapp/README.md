@@ -11,7 +11,7 @@
 
 3 - websockets chat xss - unauthenticated (broadcast) - IMPLEMENTED
 
-  (under message_socket_working/socket.io/examples/chat - node index.js - port 4500)
+  (under message_socket/socket.io/examples/chat - node index.js - port 4500)
 
   check if can run this https://github.com/sreeix/redis-proxy
 

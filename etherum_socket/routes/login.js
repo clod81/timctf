@@ -18,6 +18,7 @@ router.post('/', function(req, res){
       var user = {id: user_id};
       var token = jwt.sign(user, jwtSecret, { expiresInMinutes: 60*60 }); // we are sending the user in the token
       redisReadWrite.del("user:notifier:" + token_param);
+      redisReadWrite.del("user:notifier:" + user_id);
       // console.log("post in login");
       res.json({token: token});
     }

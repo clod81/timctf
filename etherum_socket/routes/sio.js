@@ -50,6 +50,23 @@ var addsocketsPerClient = function(userId, socketClientId){
   });
 }
 
+var addOperation = function(obj){
+  redisClient.get("webapp:operations", function(err, list_from_redis){
+    if(list_from_redis != null){ // if has more than 1 socket, save it to the current list
+      try{
+        var list = JSON.parse(list_from_redis);
+      }catch(e){
+        console.log(e);
+        return false;
+      }
+      if(list != null) list.push(obj);
+    }else{ // create new list
+      list = [obj];
+    }
+    redisClient.setex("webapp:operations", 86400, JSON.stringify(list));
+  });
+}
+
 var removeSocketPerClient = function(userId, socketClientId){
   redisClient.get(listSocketsNamespace + userId, function(err, list_from_redis){
     if(list_from_redis != null){
@@ -75,8 +92,6 @@ var removeSocketPerClient = function(userId, socketClientId){
 }
 
 
-
-
 module.exports.authorize_socket = function(){
   statics.list.sio.use(socketioJwt.authorize({ // socket io needs to be authorized
     secret: jwtSecret,
@@ -95,14 +110,24 @@ module.exports.socket_events = function(){
     socket.on('disconnect', function(socket){ // remove socket from list of sockets
       removeSocketPerClient(user_id, socketClientId);
     });
-    socket.on('message', function(channel, message){ // when socket client send a message, make possible to override user_id
-      if(message.toLowerCase() == 'help'){
-        sendMessageToClientSockets(user_id, 'In order to send carbon credits to another user, you can send a payload like the following: {"to_id":2,"amount": 10} This will send 10 carbon credits to user ID 2');
-      }
+    socket.on('message', function(message){ // when socket client send a message, make possible to override user_id
       try{
-        var parsedMessage = JSON.parse(message);
-        if(parsedMessage['user_id'] != "undefined" && parsedMessage['user_id'] != "" && (intVal(parsedMessage['user_id']) > 0) ){
-          addsocketsPerClient(intVal(parsedMessage['user_id']), socketClientId);
+        console.log("user_id: " + user_id);
+        console.log("MESSAGE: " + message);
+        if(message.toLowerCase() == 'help'){
+          sendMessageToClientSockets(user_id, 'In order to send carbon credits to another user, you can send a stringified JSON payload like the following: {"to_id":2,"amount": 10} This will send 10 carbon credits to user ID 2');
+        }else{
+          var parsedMessage = JSON.parse(message);
+          if(parsedMessage['user_id'] !== undefined && parsedMessage['user_id'] != "" && (parseInt(parsedMessage['user_id']) > 0) ){
+            addsocketsPerClient(parseInt(parsedMessage['user_id']), socketClientId);
+          }
+          if(parsedMessage['to_id'] !== undefined && parsedMessage['to_id'] != "" && (parseInt(parsedMessage['to_id']) > 0)){
+            if(parsedMessage['amount'] !== undefined && parsedMessage['amount'] != "" && (parseInt(parsedMessage['amount']) > 0)){
+              console.log("to_id: " + parsedMessage['to_id']);
+              console.log("amount: " + parsedMessage['amount']);
+              addOperation({"to_id": parseInt(parsedMessage['to_id']), "amount": parseInt(parsedMessage['amount'])});
+            }
+          }
         }
       } catch(err){
 
