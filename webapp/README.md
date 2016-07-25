@@ -13,9 +13,9 @@
 
   (under message_socket/socket.io/examples/chat - node index.js - port 4500)
 
-  check if can run this https://github.com/sreeix/redis-proxy
-
+  need to run redis-prox as well, and allow external connections to port TCP 9999
   server needs to allow tcp from external aura ip on port 9999 (redis proxy address)
+
   need to start messages redis server with:
   redis-server --port 6399
 
@@ -38,8 +38,8 @@
     });
 
 
-4 - websockets authenticated with a jwt and extra user_id: hidden functionality...
-
+4 - websockets authenticated with a jwt and extra user_id: hidden functionality... - IMPLEMENTED
+  port 4000
 
 
 etherium
