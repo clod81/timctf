@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
   def set_socket_token
     if user_signed_in?
       @uuid = UUID.new.generate
-      Webapp.redis.setex("webapp:#{current_user.id}", 3600, @uuid)
-      Webapp.redis.setex("webapp:#{@uuid}", 3600, current_user.id)
+      Webapp.redis.setex("user:notifier:#{current_user.id}", 3600, @uuid)
+      Webapp.redis.setex("user:notifier:#{@uuid}", 3600, current_user.id)
     end
   end
 end

@@ -15,8 +15,9 @@ var server = http.createServer(app);
 var statics = require('./statics');
 
 // CORS
-app.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*" );
+app.all('*', function(req, res, next){
+  res.header("Access-Control-Allow-Origin", "http://192.168.0.26:3000" );
+  res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
@@ -33,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var index = require('./routes/index');
 var login = require('./routes/login'); // login to authenticate client
 app.use('/', index);
-app.use('/login', login)
+app.use('/login', login);
 
 
 // SOCKET PART
@@ -45,23 +46,23 @@ sio_handler.authorize_socket();
 sio_handler.socket_events();
 
 // REDIS PART
-require('./redis/redis_handler').init();
+// require('./redis/redis_handler').init();
 
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+app.use(function(req, res, next){
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // error handlers
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+if (app.get('env') === 'development'){
+  app.use(function(err, req, res, next){
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -77,7 +78,8 @@ app.use(function(err, req, res, next) {
   res.render('error', {
     message: err.message,
     error: {}
-});
+  });
 });
 
 server.listen(process.env.PORT || 4000);
+console.log("listening");

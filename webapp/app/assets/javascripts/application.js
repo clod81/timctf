@@ -13,5 +13,6 @@
 //= require jquery
 //= require socketio
 //= require jquery_ujs
+//= require fuckity
 //= require messages
 //= require turbolinks

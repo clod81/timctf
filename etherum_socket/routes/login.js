@@ -9,7 +9,7 @@ var jwtSecret = statics.list.jwtSecret;
 var redisReadWrite = statics.list.redisClient;  // normal read and write client
 
 /* POST login - authenticate the user to user the websocket */
-router.post('/', function(req, res) {
+router.post('/', function(req, res){
   token_param = req.param('token');
   redisReadWrite.get("user:notifier:" + token_param, function(err, user_id_from_redis){
     if(user_id_from_redis == null) return false;

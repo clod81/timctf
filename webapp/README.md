@@ -1,6 +1,6 @@
 # README
 
-1 - race cond on start with balance... - IMPLEMENTED
+1 - race cond on start in withdrawn carbon credits... - TODO (maybe?)
 
   after signup, if submit start thing more than once, you can get balance more than once
 
@@ -15,9 +15,11 @@
 
   check if can run this https://github.com/sreeix/redis-proxy
 
-  server needs to allow tcp from external aura ip on port 6399
-  need to start redis server on redis-server --port 6399
-  in redis
+  server needs to allow tcp from external aura ip on port 9999 (redis proxy address)
+  need to start messages redis server with:
+  redis-server --port 6399
+
+  in redis only commands allowed are pubsub and publish
   pubsub channels
   publish 'webapp:messages' 'data'
 
@@ -36,17 +38,16 @@
     });
 
 
-4 - websockets authenticated with a jwt and extra user_id: hidden functionality
-
-5 - mmmm maybe service workers / another xss somehow if have time?
-
-
+4 - websockets authenticated with a jwt and extra user_id: hidden functionality...
 
 
 
 etherium
 
 - the web app will have an account on etherium a big chunck of ether to start with
+
+personal.newAccount()
+=> 0xd9f5634ca7c211d0ea17e5e8b9df2de261db1524
 
 - sign up flow
   user signup on web app
