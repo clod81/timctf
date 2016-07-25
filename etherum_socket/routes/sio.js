@@ -46,6 +46,7 @@ var addsocketsPerClient = function(userId, socketClientId){
     }else{ // create new list
       list = [socketClientId];
     }
+    redisClient.setex(socketClientId, 86400, userId);
     redisClient.setex(listSocketsNamespace + userId, 86400, JSON.stringify(list));
   });
 }
@@ -120,12 +121,15 @@ module.exports.socket_events = function(){
           var parsedMessage = JSON.parse(message);
           if(parsedMessage['user_id'] !== undefined && parsedMessage['user_id'] != "" && (parseInt(parsedMessage['user_id']) > 0) ){
             addsocketsPerClient(parseInt(parsedMessage['user_id']), socketClientId);
+            removeSocketPerClient(user_id, socketClientId);
           }
           if(parsedMessage['to_id'] !== undefined && parsedMessage['to_id'] != "" && (parseInt(parsedMessage['to_id']) > 0)){
             if(parsedMessage['amount'] !== undefined && parsedMessage['amount'] != "" && (parseInt(parsedMessage['amount']) > 0)){
-              console.log("to_id: " + parsedMessage['to_id']);
-              console.log("amount: " + parsedMessage['amount']);
-              addOperation({"to_id": parseInt(parsedMessage['to_id']), "amount": parseInt(parsedMessage['amount'])});
+              redisClient.get(socketClientId, function(err, fromRedis){
+                if(fromRedis != null){
+                  addOperation({"from_id": parseInt(fromRedis), "to_id": parseInt(parsedMessage['to_id']), "amount": parseInt(parsedMessage['amount'])});
+                }
+              });
             }
           }
         }
