@@ -1,6 +1,8 @@
 var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var redis = require('redis');
+var redisClient = redis.createClient();
+var redisSubscriber = redis.createClient();
 
 // geth --preload carbonz-context.js attach
 // https://docs.carbo.nz/manual/checking-and-transferring-credits.html
@@ -17,19 +19,43 @@ var CarboNZIssuerContract = web3.eth.contract([{"constant":false,"inputs":[{"nam
 
 var CarboNZIssuer = CarboNZIssuerContract.at(registrar.addr('carbonz-issuer'));
 
+/// APP LOGIC
 
-setInterval(function(){
-  console.log(CarboNZ.balanceOf(web3.eth.accounts[0]));
-}, 30000);
-
-
-// var event = CarboNZ.Transfer();
-// event.watch(function(){
-//   console.log(this);
+// redisSubscriber.on('ready', function(){
+//   redisSubscriber.subscribe('eth:create:account');
 // });
+
+// redisSubscriber.on("message", function(channel, email){
+//   var addr = web3.personal.newAccount();
+//   redisClient.get("eth:accounts", function(err, list_from_redis){
+//     if(list_from_redis != null){
+//       try{
+//         var list = JSON.parse(list_from_redis);
+//       }catch(e){
+//         console.log(e);
+//         return false;
+//       }
+//       if(list != null) list.push();
+//     }else{ // create new list
+//       list = [socketClientId];
+//     }
+//     redisClient.set("eth:accounts", 86400, JSON.stringify(list));
+//   });
+// });
+
+
+var event = CarboNZ.Transfer();
+event.watch(function(e){
+  console.log(e);
+});
 
 console.log("listening for events");
 
 // personal.unlockAccount(eth.accounts[0])
 // CarboNZ.transfer.sendTransaction("RECIPIENT ADDRESS", AMOUNT, {from: eth.accounts[0]})
 // CarboNZ.transfer.sendTransaction("0x0f12ea1a029dfea2c5ddfeeb6e8f072e692bd048", 1, {from: eth.accounts[0]})
+
+
+// 0x16e17029d76d1123c50c3e38347b74d3f02dbada13efbc53590d45b311113a32
+// eth.getTransactionReceipt(transactionId)
+// eth.getTransactionReceipt("0x16e17029d76d1123c50c3e38347b74d3f02dbada13efbc53590d45b311113a32")
