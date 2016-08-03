@@ -10,29 +10,15 @@ class Transaction < ActiveRecord::Base
 
   after_commit :send_to_etherum
 
-  # async function
-  def delay_send_to_etherum(transaction_id)
-    t = Transaction.where(id: transaction_id).first
-    return unless t # been delete maybe = WTF...
-    trans = {}
-    trans['from']   = t.user.eth_address
-    trans['to']     = t.credited_user.eth_address
-    trans['amount'] = t.amount
-    Webapp.redis.publish("eth:transaction", trans.to_json) # send info to node component
-    # t.class.transaction do # balances are check every minute by a rake task job
-    #   t.credited_user.balance += amount
-    #   t.user.balance -= amount
-    #   t.user.save
-    #   t.credited_user.save
-    #   t.update(approved: true)
-    # end
-  end
-
   private
 
   def send_to_etherum
-    return if approved
-    delay.delay_send_to_etherum(id)
+    trans = {
+      from:   user.eth_address,
+      to:     credited_user.eth_address,
+      amount: amount
+    }
+    Webapp.redis.publish("eth:transaction", trans.to_json) # send info to node component
   end
 
   def check_amounts

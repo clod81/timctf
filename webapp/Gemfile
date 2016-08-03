@@ -38,7 +38,6 @@ gem 'haml'
 gem 'ethereum'
 
 gem 'redis'
-gem 'sidekiq'
 
 gem 'uuid'
 
