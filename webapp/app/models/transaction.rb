@@ -1,7 +1,7 @@
 class Transaction < ActiveRecord::Base
 
   belongs_to :user
-  belongs_to :debited_user, class_name: 'User', foreign_key: 'to_user_id'
+  belongs_to :credited_user, class_name: 'User', foreign_key: 'to_user_id'
 
   validates :user_id, :to_user_id, :amount, presence: true
   validates :amount, numericality: { only_integer: true, greater_than: 0 }
@@ -13,18 +13,19 @@ class Transaction < ActiveRecord::Base
   # async function
   def delay_send_to_etherum(transaction_id)
     t = Transaction.where(id: transaction_id).first
-    # send it to redis to let the node thingee handle it
-    # following has to be done once the transaction is confirmed (unless assumed it's all good to go)
-    return unless t # been delete maybe...
-    # TODO.... send to etherum
-    # if etherum success
-    t.class.transaction do
-      t.user.balance += amount
-      t.debited_user.balance -= amount
-      t.user.save
-      t.debited_user.save
-      t.update(approved: true)
-    end
+    return unless t # been delete maybe = WTF...
+    trans = {}
+    trans['from']   = t.user.eth_address
+    trans['to']     = t.credited_user.eth_address
+    trans['amount'] = t.amount
+    Webapp.redis.publish("eth:transaction", trans.to_json) # send info to node component
+    # t.class.transaction do # balances are check every minute by a rake task job
+    #   t.credited_user.balance += amount
+    #   t.user.balance -= amount
+    #   t.user.save
+    #   t.credited_user.save
+    #   t.update(approved: true)
+    # end
   end
 
   private
@@ -35,7 +36,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def check_amounts
-    if amount && debited_user && debited_user.balance < amount
+    if amount && user && user.balance < amount
       self.errors.add(:amount, "sender does not have enough balance to perform this transaction")
       return false
     end

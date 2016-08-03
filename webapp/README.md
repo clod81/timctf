@@ -1,5 +1,8 @@
 # README
 
+# remember to setup cronjob to run the rake tasks of the web app
+
+
 1 - race cond on start in withdrawn carbon credits... - TODO (maybe?)
 
   after signup, if submit start thing more than once, you can get balance more than once

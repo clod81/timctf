@@ -12,4 +12,12 @@ class ApplicationController < ActionController::Base
       Webapp.redis.setex("user:notifier:#{@uuid}", 3600, current_user.id)
     end
   end
+
+  def load_transactions
+    if user_signed_in?
+      @sent_transactions     = current_user.transactions.order("id desc")
+      @received_transactions = current_user.received_transactions.order("id desc")
+      @all_user_balances     = User.all.select("email, balance").where("id != ?", current_user.id).load
+    end
+  end
 end

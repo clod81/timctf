@@ -8,8 +8,6 @@
       Amount
     %th
       Received at
-    %th
-      Approved
   %tbody
     - transactions.each do |t|
       %tr
@@ -22,8 +20,3 @@
           = t.amount
         %td
           = t.created_at.try(:localtime)
-        %td
-          - if t.approved?
-            Yes
-          - elsif type == :sent
-            = button_to("Reverse", t, method: :delete, data: { confirm: "Are you sure?", disable_with: 'processing...' })

@@ -5,12 +5,15 @@
         = msg
 
 - if current_user
+
   - if current_user.balance_initialised
     Your current balance is:
-    = current_user.balance
+    %b
+      = current_user.balance
     - if current_user.balance.zero?
       %br
-      Either the system did not assign you any balance yet, or you ran out...
+      %br
+      Start claming carbon credits and send to others.
     - else
       %br
       %br
@@ -45,11 +48,19 @@
     %h3 Received Credit Transactions
     = render partial: 'transactions/transactions', locals: { transactions: @received_transactions, type: :received }
 
-  - else
-    In order to start testing the system you need the system, you need to get assigned some balance.
-    = button_to('Let\'Start!', { action: :create}, { data: { confirm: 'Are you ready to roll?', disable_with: 'YES!' } } )
+  - if @all_user_balances
+    %h3 All other user balances
+    - @all_user_balances.each do |u|
+      = "#{u.email}: "
+      %b
+        = u.balance
+      %br
 
-- else
+  - unless current_user.balance_initialised
+    In order to start testing the system you need the system, you need to get assigned some balance.
+    = button_to('Let\'Start!', { action: :create }, { data: { confirm: 'Are you sure?', disable_with: 'YES!' } } )
+
+- else -# not logged in
 
   CarbonNZ is implementing a new web interface in order to allow registered users to send their carbon credit to other registered users.
 

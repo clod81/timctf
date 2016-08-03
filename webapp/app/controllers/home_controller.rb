@@ -12,9 +12,9 @@ class HomeController < ApplicationController
       render nothing: true
       return
     end
-    current_user.init_eth_account
     current_user.update(balance_initialised: true)
-    flash[:notice] = "Please wait for user to be created in ehterum..."
+    current_user.init_eth_account
+    flash[:notice] = "Please wait at least one minute before start using the system, for user to be created in ethereum..."
     redirect_to root_path
   end
 
@@ -24,16 +24,9 @@ class HomeController < ApplicationController
     unless current_user.balance_initialised
       return true
     end
-    flash[:error] = "You already created your user"
+    flash[:error] = "You already initialised your user"
     redirect_to root_path
     false
-  end
-
-  def load_transactions
-    if user_signed_in?
-      @sent_transactions     = current_user.transactions.order("id desc")
-      @received_transactions = current_user.received_transactions.order("id desc")
-    end
   end
 
 end

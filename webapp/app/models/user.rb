@@ -15,5 +15,6 @@ class User < ApplicationRecord
     return unless eth_address.blank?
     self.eth_address = "0x" + (`yes '' | geth account new`).to_s.match(/{(.*?)}/)[0].gsub('{', '').gsub('}', '')
     self.save
+    Webapp.redis.publish('eth:create:account', eth_address) # send to node part to create eth account, send ether in order to be able to create transactions
   end
 end
