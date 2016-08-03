@@ -13,6 +13,8 @@ class Transaction < ActiveRecord::Base
   # async function
   def delay_send_to_etherum(transaction_id)
     t = Transaction.where(id: transaction_id).first
+    # send it to redis to let the node thingee handle it
+    # following has to be done once the transaction is confirmed (unless assumed it's all good to go)
     return unless t # been delete maybe...
     # TODO.... send to etherum
     # if etherum success

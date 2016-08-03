@@ -4,6 +4,9 @@ var redis = require('redis');
 var redisClient = redis.createClient();
 var redisSubscriber = redis.createClient();
 
+// geth --networkid=99 --rpc --rpccorsdomain=*.carbo.nz --unlock 0xd9f5634ca7c211d0ea17e5e8b9df2de261db1524 --rpcapi eth,net,web3,personal
+// geth --networkid=99 --rpc --rpccorsdomain=*.carbo.nz --rpcapi eth,net,web3,personal
+
 // geth --preload carbonz-context.js attach
 // https://docs.carbo.nz/manual/checking-and-transferring-credits.html
 
@@ -44,10 +47,16 @@ var CarboNZIssuer = CarboNZIssuerContract.at(registrar.addr('carbonz-issuer'));
 // });
 
 
+console.log(web3.personal.unlockAccount(CarboNZ._eth.accounts[1], ''));
+var transactions = []
+
 var event = CarboNZ.Transfer();
-event.watch(function(e){
-  console.log(e);
+event.watch(function(){
+  console.log(CarboNZ._eth.getTransactionReceipt(transactions.pop()));
 });
+
+
+// transactions.push(CarboNZ.transfer.sendTransaction("0x0f12ea1a029dfea2c5ddfeeb6e8f072e692bd048", 1, {from: CarboNZ._eth.accounts[0]}));
 
 console.log("listening for events");
 
