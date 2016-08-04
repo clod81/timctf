@@ -7,6 +7,11 @@
 - if current_user
 
   - if current_user.balance_initialised
+    Your address is:
+    %b
+      = current_user.eth_address
+    %br
+    %br
     Your current balance is:
     %b
       = current_user.balance
