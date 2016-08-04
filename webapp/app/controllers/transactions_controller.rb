@@ -1,7 +1,7 @@
 class TransactionsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :load_transactions, only: :create
+  before_action :load_transactions, only: [:create, :external]
 
   def index
     redirect_to root_path
@@ -26,6 +26,22 @@ class TransactionsController < ApplicationController
       end
     end
     redirect_to root_path
+  end
+
+  def external
+    addr   = params[:address]
+    amount = params[:amount] || -1
+    if addr.blank? || amount.to_i <= 0
+      flash[:error] = "You need to specify a valid Ethereum address and amount"
+    else
+      trans = {
+        from:   current_user.eth_address,
+        to:     addr,
+        amount: amount.to_i
+      }
+      Webapp.redis.publish("eth:transaction", trans.to_json) # send info to node component to do real transaction
+    end
+    render template: 'home/index'
   end
 
   private

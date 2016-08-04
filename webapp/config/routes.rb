@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :transactions, only: [:index, :create, :destroy] do
     collection do
       post :csv
+      post :external
     end
   end
 

@@ -45,6 +45,15 @@
         = file_field_tag 'csv'
         = submit_tag "Upload CSV"
 
+      %br
+      %br
+      You can send credits to an external Ethereum address. If you insert an address that does not exist, the credit will remain in your account.
+      = form_tag(external_transactions_path) do |f|
+        = text_field_tag :address, nil, placeholder: "ETHEREUM ADDRESS"
+        = text_field_tag :amount, nil, placeholder: "AMOUNT"
+        = submit_tag "Send credits"
+
+
   - if @sent_transactions && @sent_transactions.any?
     %h3 Sent Credit Transactions
     = render partial: 'transactions/transactions', locals: { transactions: @sent_transactions, type: :sent }
