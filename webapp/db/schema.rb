@@ -12,7 +12,8 @@
 
 ActiveRecord::Schema.define(version: 20160803004302) do
 
-  create_table "transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  # create_table "transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "transactions", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "to_user_id"
     t.integer  "amount"
@@ -23,7 +24,8 @@ ActiveRecord::Schema.define(version: 20160803004302) do
     t.index ["user_id"], name: "index_transactions_on_user_id", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  # create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
