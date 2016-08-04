@@ -15,7 +15,7 @@ module Webapp
     # disabled secure headers, who bloody needs them...
     config.action_dispatch.default_headers.clear
 
-    config.active_job.queue_adapter = :sidekiq
+    # config.active_job.queue_adapter = :sidekiq
     config.active_job.queue_name_prefix = "#{Rails.env}:carbonz:"
   end
 end

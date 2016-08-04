@@ -33,7 +33,7 @@
   from node
   npm install socket.io-client
 
-    var socket = require('socket.io-client')('http://192.168.0.25:4500');
+    var socket = require('socket.io-client')('https://wallet.carbo.nz:4500');
     socket.on('connect', function(){
       socket.emit("message", "<script>alert(1)</script>");
     });

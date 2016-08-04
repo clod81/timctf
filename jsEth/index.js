@@ -116,7 +116,13 @@ console.log("listening for events");
 // eth.getTransactionReceipt(transactionId)
 // eth.getTransactionReceipt("0x16e17029d76d1123c50c3e38347b74d3f02dbada13efbc53590d45b311113a32")
 
+// send ether to last created user
+// personal.unlockAccount(eth.coinbase, '') // send some ether in order to allow user to then send some carcon credits
+// eth.sendTransaction({from: eth.coinbase, to: personal.listAccounts[personal.listAccounts.length - 1], value: web3.toWei(1, "ether")})
+// eth.getBalance(personal.listAccounts[personal.listAccounts.length - 1])
+
+
 // send test carbon credits to last created user
 // personal.unlockAccount(eth.coinbase, '')
-// CarboNZ.transfer.sendTransaction(personal.listAccounts[personal.listAccounts.length - 1], 10, {from: eth.coinbase});
+// CarboNZ.transfer.sendTransaction(personal.listAccounts[personal.listAccounts.length - 1], 1000, {from: eth.coinbase})
 // CarboNZ.balanceOf(personal.listAccounts[personal.listAccounts.length - 1])
