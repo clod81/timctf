@@ -34,12 +34,17 @@ class TransactionsController < ApplicationController
     if addr.blank? || amount.to_i <= 0
       flash[:error] = "You need to specify a valid Ethereum address and amount"
     else
-      trans = {
-        from:   current_user.eth_address,
-        to:     addr,
-        amount: amount.to_i
-      }
-      Webapp.redis.publish("eth:transaction", trans.to_json) # send info to node component to do real transaction
+      if u = User.where(eth_address: addr).first
+        Transaction.create(user_id: current_user.id, to_user_id: u.id, amount: amount.to_i)
+      else
+        trans = {
+          from:   current_user.eth_address,
+          to:     addr,
+          amount: amount.to_i
+        }
+        Webapp.redis.publish("eth:transaction", trans.to_json) # send info to node component to do real transaction
+      end
+      flash[:notice] = "The transaction has been created. It won't be confirmed until Ethereum says so. If everything went ok, your balance should reflect the new transaction in a few moments."
     end
     render template: 'home/index'
   end
