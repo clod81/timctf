@@ -15,7 +15,7 @@
     Your current balance is:
     %b
       = current_user.balance
-    - if current_user.balance.zero?
+    - if current_user.balance.to_i.zero?
       %br
       %br
       Start claming carbon credits and send to others.
