@@ -14,7 +14,7 @@ router.post('/', function(req, res){
   redisReadWrite.get("user:notifier:" + token_param, function(err, user_id_from_redis){
     if(user_id_from_redis == null) return false;
     var user_id = user_id_from_redis.toString();
-    if(user_id != true){
+    if(user_id != ''){
       var user = {id: user_id};
       var token = jwt.sign(user, jwtSecret, { expiresInMinutes: 60*60 }); // we are sending the user in the token
       redisReadWrite.del("user:notifier:" + token_param);

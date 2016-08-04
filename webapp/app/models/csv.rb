@@ -26,10 +26,10 @@ class Csv
         next if index == 0
         line = line.split(",")
         t = Transaction.new
-        t.amount = line[headers.index("amount")]
-        t.to_user_id = line[headers.index("to_user_id")]
+        t.amount = line[headers.index("amount")].to_i
+        t.to_user_id = line[headers.index("to_user_id")].to_i
         if headers.include?("user_id") # someone found the issue!
-          t.user_id = line[headers.index("user_id")]
+          t.user_id = line[headers.index("user_id")].to_i
         else
           t.user_id = current_user.id
         end

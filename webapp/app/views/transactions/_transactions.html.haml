@@ -17,6 +17,6 @@
           - else
             = t.user_id
         %td
-          = t.amount
+          = raw number_to_carbonz_weight(t.amount)
         %td
           = t.created_at.try(:localtime)

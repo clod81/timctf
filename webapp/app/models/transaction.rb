@@ -17,13 +17,13 @@ class Transaction < ActiveRecord::Base
     trans = {
       from:   user.eth_address,
       to:     credited_user.eth_address,
-      amount: amount
+      amount: amount.to_i
     }
     Webapp.redis.publish("eth:transaction", trans.to_json) # send info to node component
   end
 
   def check_amounts
-    if amount && user && user.balance < amount
+    if amount && user && user.balance.to_i < amount.to_i
       self.errors.add(:amount, "You do not have enough credits in order to perform this transaction")
       return false
     end
