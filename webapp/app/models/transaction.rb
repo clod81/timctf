@@ -4,6 +4,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :credited_user, class_name: 'User', foreign_key: 'to_user_id'
 
   validates :user_id, :to_user_id, :amount, presence: true
+  validates :user, :credited_user, presence: { message: "The user does not exist" }
   validates :amount, numericality: { only_integer: true, greater_than: 0 }
   validate :different_users
   validate :check_amounts
@@ -23,7 +24,7 @@ class Transaction < ActiveRecord::Base
 
   def check_amounts
     if amount && user && user.balance < amount
-      self.errors.add(:amount, "sender does not have enough balance to perform this transaction")
+      self.errors.add(:amount, "You do not have enough credits in order to perform this transaction")
       return false
     end
   end

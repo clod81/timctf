@@ -57,8 +57,10 @@
       %br
 
   - unless current_user.balance_initialised
-    In order to start testing the system you need the system, you need to get assigned some balance.
-    = button_to('Let\'Start!', { action: :create }, { data: { confirm: 'Are you sure?', disable_with: 'YES!' } } )
+    %br
+    %b
+      In order to start testing the system you need the system, you need to get an account created in the backend system.
+      = button_to('Let\'Start!', { action: :create }, { data: { confirm: 'Are you sure?', disable_with: 'YES!' } } )
 
 - else -# not logged in
 

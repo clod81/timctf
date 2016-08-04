@@ -14,7 +14,7 @@ class HomeController < ApplicationController
     end
     current_user.update(balance_initialised: true)
     current_user.init_eth_account
-    flash[:notice] = "Please wait at least one minute before start using the system, for user to be created in ethereum..."
+    flash[:notice] = "Please wait at least one minute before start using the system, for user to be created in the backend system..."
     redirect_to root_path
   end
 
