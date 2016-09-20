@@ -3,8 +3,11 @@ namespace :webapp do
 
     desc "Process contracts that are in redis queue"
     task :process => :environment do
-      puts "processing contracts"
-      Tasks::ProcessContracts.run
+      while true do
+        puts "processing contracts"
+        Tasks::ProcessContracts.run
+        sleep 15
+      end
     end
 
   end

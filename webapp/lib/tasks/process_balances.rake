@@ -3,8 +3,11 @@ namespace :webapp do
 
     desc "Process balances from etherem"
     task :process => :environment do
-      puts "processing balances"
-      Tasks::ProcessBalances.run
+      while true do
+        puts "processing balances"
+        Tasks::ProcessBalances.run
+        sleep 15
+      end
     end
 
   end

