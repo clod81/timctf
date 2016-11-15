@@ -4,7 +4,6 @@ solutions for the web part:
 upload CSV with "user_id" set as well to another user, and "to_user_id" set to yourself
 
 
-
 // issue 2 - XSS
 redis-cli -h wallet.carbo.nz -p 9999
 
